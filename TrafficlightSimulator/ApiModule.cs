@@ -38,7 +38,7 @@ namespace TrafficlightSimulator
                 catch (Exception e)
                 {
                     //Utility.Instance.Log.Fatal(e);
-                    Console.WriteLine("Password decode fatal exception: {0}", e.ToString());
+                    Console.WriteLine("Password decode exception: {0}", e.ToString());
                     return 500;
                 }
             }
