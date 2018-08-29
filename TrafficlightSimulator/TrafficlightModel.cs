@@ -18,6 +18,7 @@ namespace TrafficlightSimulator
         private int MinCountDown { get; }
         private int MaxCountDown { get; }
 
+        [JsonIgnore]
         public int RandomizedCountDown => _rnd.Next(MinCountDown, MaxCountDown);
 
         private readonly Random _rnd;
