@@ -15,6 +15,7 @@ namespace TrafficlightSimulator
     {
 
         private static TrafficlightModel _trafficLightModel;
+        private static int _randomCountDown;
 
         static void Main(string[] args)
         {
@@ -22,10 +23,6 @@ namespace TrafficlightSimulator
             Console.WriteLine("Starting server!");
 
             _trafficLightModel = TrafficlightModel.Instance;
-
-            _trafficLightModel.TrafficLightStatus = TrafficLightStatus.Red;
-            _trafficLightModel.TTR = 10;
-            _trafficLightModel.TTG = 10;
 
             System.Timers.Timer aTimer = new System.Timers.Timer();
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
@@ -81,39 +78,40 @@ namespace TrafficlightSimulator
             {
                 case TrafficLightStatus.Red:
                 {
-                    _trafficLightModel.TTG--;
-                    if (_trafficLightModel.TTG == 0)
+                    _trafficLightModel.Ttg--;
+                    if (_trafficLightModel.Ttg == 0)
                     {
+                        _randomCountDown = _trafficLightModel.RandomizedCountDown;
                         _trafficLightModel.TrafficLightStatus = TrafficLightStatus.Yellow;
-                        _trafficLightModel.TTR = 10;
-                    }
-                        
+                        _trafficLightModel.Ttr = _randomCountDown;
+                    }  
                 }
-                    break;
+                break;
                 case TrafficLightStatus.Yellow:
                 {
-                    if (_trafficLightModel.TTR == 10)
+                    if (_trafficLightModel.Ttr == _randomCountDown)
                     {
                         _trafficLightModel.TrafficLightStatus = TrafficLightStatus.Green;
                     }
-                    else if (_trafficLightModel.TTG == 10)
+                    else if (_trafficLightModel.Ttg == _randomCountDown)
                     {
                         _trafficLightModel.TrafficLightStatus = TrafficLightStatus.Red;
                     }
                 }
-                    break;
+                break;
                 case TrafficLightStatus.Green:
-                    _trafficLightModel.TTR--;
-                    if (_trafficLightModel.TTR == 0)
+                    _trafficLightModel.Ttr--;
+                    if (_trafficLightModel.Ttr == 0)
                     {
+                        _randomCountDown = _trafficLightModel.RandomizedCountDown;
                         _trafficLightModel.TrafficLightStatus = TrafficLightStatus.Yellow;
-                        _trafficLightModel.TTG = 10;
+                        _trafficLightModel.Ttg = _randomCountDown;
                     }
-                    break;
+                break;
             }
 
-            Console.WriteLine("TTG: {0}", _trafficLightModel.TTG);
-            Console.WriteLine("TTR: {0}", _trafficLightModel.TTR);
+            Console.WriteLine("TTG: {0}", _trafficLightModel.Ttg);
+            Console.WriteLine("TTR: {0}", _trafficLightModel.Ttr);
             Console.WriteLine("Traffic light status: {0}", _trafficLightModel.TrafficLightStatus.ToString());
         }
     }

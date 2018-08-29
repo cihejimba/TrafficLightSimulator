@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
 
 namespace TrafficlightSimulator
 {
@@ -12,11 +13,23 @@ namespace TrafficlightSimulator
         [JsonConverter(typeof(StringEnumConverter))]
         public TrafficLightStatus TrafficLightStatus { get; set; }
 
-        public int TTG { get; set; }
-        public int TTR { get; set; }
+        public int Ttg { get; set; }
+        public int Ttr { get; set; }
+        private int MinCountDown { get; }
+        private int MaxCountDown { get; }
+
+        public int RandomizedCountDown => _rnd.Next(MinCountDown, MaxCountDown);
+
+        private readonly Random _rnd;
+
         public TrafficlightModel()
         {
-            // Set default values at start-up.
+            TrafficLightStatus = TrafficLightStatus.Red;
+            Ttg = 10;
+            Ttr = 10;
+            MinCountDown = 8;
+            MaxCountDown = 12;
+            _rnd = new Random();
         }
 
         public static TrafficlightModel Instance
